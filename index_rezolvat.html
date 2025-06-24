@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Number guessing game</title>
+
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+
+        body {
+            width: 50%;
+            max-width: 800px;
+            min-width: 480px;
+            margin: 0 auto;
+        }
+
+        .form input[type="number"] {
+            width: 200px;
+        }
+
+        .lastResult {
+            color: white;
+            padding: 3px;
+        }
+
+        #replay{
+            display:none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Number guessing game</h1>
+
+    <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you
+        if your guess was too high or too low.</p>
+
+    <div class="form">
+        <label for="guessField">Enter a guess: </label>
+        <input type="number" min="1" max="100" required class="guessField">
+        <input type="submit" value="Submit guess" id = "guessSubmit">
+    </div>
+
+    <button id = "replay">Replay</button>
+
+    <div class="resultParas">
+        <p class="guesses"></p>
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+        <p class="finalMessage"></p>
+    </div>
+
+    <script>
+        const randomNumber =  Math.floor(Math.random() * 100)
+        let guessesLeft = 10
+        const wrongGuesses = ""
+
+        const guessesParagraph = document.querySelector(".guesses")
+        const lastResult = document.querySelector(".lastResult")
+        const lowOrHi = document.querySelector(".lowOrHi")
+        const replay = document.querySelector("#replay")
+
+        document.getElementById("guessSubmit").addEventListener("click", checkGuess)
+
+        function checkGuess(){
+            const guessFieldValue = Number(document.querySelector(".guessField").value)
+            const finalMessage = document.querySelector(".finalMessage")
+
+            if (guessesLeft == 0) {
+                replay.style.display = "block"
+
+                document.body.style.backgroundColor = "red"
+                finalMessage.innerText = `Ai pierdut! Numarul corect era: ${randomNumber}!`
+                return
+            }
+
+            console.log(randomNumber)
+
+            if(guessFieldValue === randomNumber){                 
+                document.body.style.backgroundColor = "green"
+                finalMessage.innerText = `Felicitari! Ai ghicit numarul corect: ${guessFieldValue}!`
+            }
+            else{
+                guessesLeft--
+                guessesParagraph.innerText += `${guessFieldValue}, `
+
+                if(guessFieldValue > randomNumber){
+                    finalMessage.innerText = `Valoarea introdusa este prea mare!`
+                }
+                else{
+                    finalMessage.innerText = `Valoarea introdusa este prea mica!`
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
